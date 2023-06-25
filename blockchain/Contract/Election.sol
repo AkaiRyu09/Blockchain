@@ -131,6 +131,6 @@ contract Election {
     }
     
     function getElectionDetails() public view returns(string, string) {
-        return (election_name,election_description);    
+        return (election_name,election_description);   
     }
 }
