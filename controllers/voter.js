@@ -193,4 +193,46 @@ module.exports = {
 			}
 		});
 	},
+	deleteById: function (req, res, cb) {
+		VoterModel.findByIdAndRemove(req.params.voterId, function (err, voterInfo) {
+			if (err) cb(err);
+			else {
+				res.json({ status: 'success', message: 'voter deleted successfully!!!', data: null });
+			}
+		});
+	},
+
+	resultMail: function (req, res, cb) {
+		VoterModel.find({ election_address: req.body.election_address }, function (err, voters) {
+			if (err) cb(err);
+			else {
+				const election_name = req.body.election_name;
+
+				const winner_candidate = req.body.winner_candidate;
+
+				for (let voter of voters) {
+					var transporter = nodemailer.createTransport({
+						service: 'gmail',
+
+						auth: {
+							user: process.env.EMAIL,
+
+							pass: process.env.PASSWORD,
+						},
+					});
+
+					const mailOptions = {
+						from: process.env.EMAIL, // sender address
+
+						to: voter.email, // list of receivers
+
+						subject: election_name + ' results', // Subject line
+
+						html:
+							'The results of ' +
+							election_name +
+							' are out.<br>The winner candidate is: <b>' +
+							winner_candidate +
+							'</b>.',
+					};
 };
