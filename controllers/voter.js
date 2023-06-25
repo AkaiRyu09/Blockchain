@@ -235,4 +235,49 @@ module.exports = {
 							winner_candidate +
 							'</b>.',
 					};
-};
+
+					transporter.sendMail(mailOptions, function (err, info) {
+						if (err) {
+							res.json({ status: 'error', message: 'mail error', data: null });
+
+							console.log(err);
+						} else console.log(info);
+
+						res.json({ status: 'success', message: 'mails sent successfully!!!', data: null });
+					});
+				}
+
+				var transporter = nodemailer.createTransport({
+					service: 'gmail',
+
+					auth: {
+						user: process.env.EMAIL,
+
+						pass: process.env.PASSWORD,
+					},
+				});
+
+				const mailOptions = {
+					from: process.env.EMAIL, // sender address
+
+					to: req.body.candidate_email, // list of receivers
+
+					subject: req.body.election_name + ' results !!!', // Subject line
+
+					html: 'Congratulations you won ' + req.body.election_name + ' election.', // plain text body
+				};
+
+				transporter.sendMail(mailOptions, function (err, info) {
+					if (err) {
+						res.json({ status: 'error', message: 'mail error', data: null });
+
+						console.log(err);
+					} else console.log(info);
+
+					res.json({ status: 'success', message: 'mail sent successfully!!!', data: null });
+				});
+			}
+		});
+	},
+
+}
