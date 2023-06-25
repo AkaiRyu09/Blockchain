@@ -3,9 +3,8 @@ const HDWalletProvider = require('truffle-hdwallet-provider');
 const Web3 = require('web3');
 const eF = require('./Build/ElectionFact.json');
 // blocks are created with temp gas
-const provider = new HDWalletProvider(
-	'soda primary wheel try parrot such unfair swarm obvious collect tobacco blouse',
-);
+const provider = new HDWalletProvider();
+
 const web3 = new Web3(provider);
 
 const deploy = async () => {
