@@ -57,4 +57,45 @@ contract Election {
         uint8 voteCount;
         string email;
     }
+//candidate mapping
+
+    mapping(uint8=>Candidate) public candidates;
+
+    //voter election_description
+
+    struct Voter {
+        uint8 candidate_id_voted;
+        bool voted;
+    }
+
+    //voter mapping
+
+    mapping(string=>Voter) voters;
+
+    //counter of number of candidates
+
+    uint8 numCandidates;
+
+    //counter of number of voters
+
+    uint8 numVoters;
+
+    //function to add candidate to mapping
+
+    function addCandidate(string memory candidate_name, string memory candidate_description, string memory imgHash,string memory email) public owner {
+        uint8 candidateID = numCandidates++; //assign id of the candidate
+        candidates[candidateID] = Candidate(candidate_name,candidate_description,imgHash,0,email); //add the values to the mapping
+    }
+    //function to vote and check for double voting
+
+    function vote(uint8 candidateID,string e) public {
+
+        //if false the vote will be registered
+        require(!voters[e].voted, "Error:You cannot double vote");
+        
+        voters[e] = Voter (candidateID,true); //add the values to the mapping
+        numVoters++;
+        candidates[candidateID].voteCount++; //increment vote counter of candidate
+        
+    }
 }
