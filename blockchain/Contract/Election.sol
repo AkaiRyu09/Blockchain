@@ -57,4 +57,39 @@ contract Election {
         uint8 voteCount;
         string email;
     }
+    //function to get count of candidates
+
+    function getNumOfCandidates() public view returns(uint8) {
+        return numCandidates;
+    }
+
+    //function to get count of voters
+
+    function getNumOfVoters() public view returns(uint8) {
+        return numVoters;
+    }
+
+    //function to get candidate information
+
+    function getCandidate(uint8 candidateID) public view returns (string memory, string memory, string memory, uint8,string memory) {
+        return (candidates[candidateID].candidate_name, candidates[candidateID].candidate_description, candidates[candidateID].imgHash, candidates[candidateID].voteCount, candidates[candidateID].email);
+    } 
+
+    //function to return winner candidate information
+
+    function winnerCandidate() public view owner returns (uint8) {
+        uint8 largestVotes = candidates[0].voteCount;
+        uint8 candidateID;
+        for(uint8 i = 1;i<numCandidates;i++) {
+            if(largestVotes < candidates[i].voteCount) {
+                largestVotes = candidates[i].voteCount;
+                candidateID = i;
+            }
+        }
+        return (candidateID);
+    }
+    
+    function getElectionDetails() public view returns(string, string) {
+        return (election_name,election_description);    
+    }
 }
